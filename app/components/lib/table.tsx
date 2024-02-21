@@ -1,5 +1,6 @@
 import {
   ColumnDef,
+  Row,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -8,13 +9,21 @@ import {
 type TableProps<TData extends object> = {
   data: Array<TData>;
   columns: Array<ColumnDef<TData, string>>;
+  onRowClick?: (row: Row<TData>) => void;
+  getRowId: (row: TData) => string;
 };
 
-const Table = <TData extends object>({ columns, data }: TableProps<TData>) => {
+const Table = <TData extends object>({
+  columns,
+  data,
+  onRowClick,
+  getRowId,
+}: TableProps<TData>) => {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getRowId,
   });
 
   return (
@@ -41,7 +50,12 @@ const Table = <TData extends object>({ columns, data }: TableProps<TData>) => {
             table.getRowModel().rows.map((row, index) => (
               <tr
                 key={row.id}
-                className={`${index % 2 !== 0 ? "bg-slate-100" : "bg-white"}`}
+                className={`transition-colors hover:bg-black hover:bg-opacity-30 ${
+                  index % 2 !== 0 ? "bg-slate-100" : "bg-white"
+                } ${onRowClick !== undefined && "cursor-pointer"}`}
+                onClick={() => {
+                  onRowClick?.(row);
+                }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="pl-1">

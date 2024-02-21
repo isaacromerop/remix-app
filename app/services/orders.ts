@@ -1,8 +1,8 @@
-import { ResponseAttr, api } from "./utils";
+import { CursorAttr, api } from "./utils";
 
 const getOrders = async (accessToken: string) => {
   const response = await api.query<
-    ResponseAttr<
+    CursorAttr<
       Array<{
         type: string;
         id: string;

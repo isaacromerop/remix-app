@@ -1,6 +1,17 @@
 import { Session, redirect } from "@remix-run/node";
 
-type ResponseAttr<
+type ResponseAttr<TData extends object> = {
+  jsonapi: {
+    version: "1.0";
+  };
+  data: {
+    type: "products" | "orders";
+    id: string;
+    attributes: TData;
+  };
+};
+
+type CursorAttr<
   TData extends Record<string, unknown> | Array<Record<string, unknown>>
 > = {
   meta: {
@@ -203,7 +214,8 @@ const api = {
         config.body instanceof FormData || config.body === undefined
           ? undefined
           : {
-              "Content-Type": "application/json",
+              Accept: "application/vnd.api+json",
+              "Content-Type": "application/vnd.api+json",
             },
       method: config.method,
     });
@@ -216,5 +228,5 @@ const api = {
   },
 };
 
-export type { ResponseAttr };
+export type { CursorAttr, ResponseAttr };
 export { api, convertToSearchParams, isAPIErrorAttr, setNotification };

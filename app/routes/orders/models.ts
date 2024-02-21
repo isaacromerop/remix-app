@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { formatDate } from "~/utils/formatters";
 
 type Order = {
+  id: string;
   number: string;
   customer: string;
   status: string;

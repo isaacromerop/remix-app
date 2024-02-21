@@ -1,4 +1,4 @@
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, json, redirect } from "@remix-run/node";
 import { Form, Link, useNavigation } from "@remix-run/react";
 import { Loader, Save } from "lucide-react";
 import { Input } from "~/components/lib/input";
@@ -29,7 +29,6 @@ const NewProduct = () => {
             <Input name="name" label="Name" required />
             <Input name="barcode" label="Barcode" required />
             <Input name="price" label="Price" required />
-            <Input name="cost" label="Cost" required />
             <Input name="weight" label="Weight" required />
             <Input name="width" label="Width" required />
             <Input name="height" label="Height" required />
@@ -61,6 +60,8 @@ const action = async ({ request }: ActionFunctionArgs) => {
     return redirect("/products");
   } catch (error) {
     console.log(error);
+
+    return json({ error });
   }
 };
 
